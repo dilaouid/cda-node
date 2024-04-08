@@ -1,0 +1,26 @@
+{
+  "name": "support",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "watch": "tsc --watch",
+    "dev": "concurrently \"tsc --watch\" \"tsnd --respawn src/app.ts\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.5",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "concurrently": "^8.0.1",
+    "typescript": "^5.4.4"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
