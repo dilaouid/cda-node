@@ -30,4 +30,8 @@ export class PostService {
         this.postsRepository.savePosts(posts);
     }
 
+    getPostIdByTitle(title: string): string | undefined {
+        return this.postsRepository.getPostIdByTitle(title);
+    }
+
 }

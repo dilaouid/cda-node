@@ -39,4 +39,10 @@ export class PostsRepository {
         // On écrit les données dans le fichier de manière synchrone
         fs.writeFileSync(this.filePath, data);
     }
+
+    // on récupére l'id d'un post en fonction de son titre
+    getPostIdByTitle(title: string): string | undefined {
+        const post = this.posts.find(post => post.title === title);
+        return post?.id;
+    }
 }

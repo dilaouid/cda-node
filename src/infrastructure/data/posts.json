@@ -1,1 +1,16 @@
-[]
+[
+    {
+      "id": "6912b0a3-0e00-4b33-ac62-aff1a93f6fe4",
+      "title": "Introduction à Node.js",
+      "content": "Node.js est une plateforme logicielle...",
+      "author": "ab546ee0-a8c7-405a-83a4-89ea2ab50396",
+      "date": "2023-01-01"
+    },
+    {
+      "id": "91597b53-25c5-40b0-bfe0-29375b42dd20",
+      "title": "Présentation d'Express",
+      "content": "Express simplifie le développement d'applications web...",
+      "author": "c8b2a77b-650b-4d49-b667-29045b3b1dd3",
+      "date": "2023-02-15"
+    }
+  ]

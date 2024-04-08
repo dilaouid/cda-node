@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "type": "module",
   "scripts": {
     "watch": "tsc --watch",
     "dev": "concurrently \"tsc --watch\" \"tsnd --respawn src/app.ts\"",
