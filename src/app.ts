@@ -7,7 +7,10 @@ const app = express();
 // Port d'écoute
 const PORT = 8000;
 
+
+// http://localhost:8000/
 app.get("/", (req: Request, res: Response) => {
+    console.log("Ceci est un console log, qui ne sera JAMAIS affiché dans le navigateur, mais seulement le terminal du serveur (ici terminal vscode)")
     res.send("Hello World pas piqué des hannetons");
 })
 

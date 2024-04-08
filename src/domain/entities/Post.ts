@@ -3,5 +3,6 @@ export interface Post {
     title: string;
     content: string;
     author: string;
+    comments?: Comment[];
     date: Date;
 };

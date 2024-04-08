@@ -1,9 +1,11 @@
 import { Post } from "../../domain/entities/Post";
 import fs from 'fs';
 import path from "path";
+import { CommentRepository } from "./CommentRepository";
 
 export class PostsRepository {
     private posts: Post[] = [];
+    private commentRepository = new CommentRepository();
 
     // Le chemin du fichier JSON des pots (à partir du repertoire courant)
     private filePath = path.join(__dirname, '..', 'data', 'posts.json');
@@ -21,8 +23,14 @@ export class PostsRepository {
 
     // Récupérer tout les posts existants dans notre posts.json
     getAllPosts(): Post[] {
-        const data = fs.readFileSync(this.filePath, 'utf-8')
-        return JSON.parse(data);
+        const data = fs.readFileSync(this.filePath, 'utf-8');
+        const posts = JSON.parse(data);
+
+        return posts.map((post: Post) => {
+            if (!post.id) return post;
+            const comments = this.commentRepository.getCommentsByPostId(post.id);
+            return { ...post, comments };
+        })
     }
 
     // Charger les données des posts à partir du fichier JSON (en private car utilisé seulement dans la class)

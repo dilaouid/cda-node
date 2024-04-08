@@ -6,6 +6,7 @@ const postService = new PostService();
 
 export const getAllPosts = (req: Request, res: Response) => {
     const posts = postService.getAllPosts();
+    console.table(posts);
     response(res, {
         statusCode: 200,
         message: 'OK',
@@ -20,6 +21,7 @@ export const getAllPosts = (req: Request, res: Response) => {
 export const getPostById = (req: Request, res: Response) => {
     const postId = req.params.id;
     const post = postService.getPostById(postId);
+    console.table(post);
     if (!post) {
         response(res, { statusCode: 404, message: 'Post not found' });
     } else {
