@@ -1,8 +1,11 @@
+// dotenv permet de charger les variables d'environnement depuis un fichier .env
 import dotenv from "dotenv";
 dotenv.config();
 
 import express, { NextFunction, Request, Response } from "express";
 import helmet from 'helmet'
+import cookieParser from "cookie-parser";
+
 import router from "./infrastructure/web/routes";
 
 import env from "./config/env";
@@ -13,6 +16,9 @@ import { errorHandler } from "./middlewares/errorHandler";
 const app = express();
 
 app.use(helmet());
+
+// mw pour pouvoir lire les cookies plus facilement
+app.use(cookieParser());
 
 // Port d'écoute
 const { PORT } = env;

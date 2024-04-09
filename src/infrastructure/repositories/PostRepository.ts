@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from "path";
 import { CommentRepository } from "./CommentRepository";
 
+// Repository qui gère le CRUD des posts
 export class PostsRepository {
     private posts: Post[] = [];
     private commentRepository = new CommentRepository();
