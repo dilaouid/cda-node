@@ -8,19 +8,31 @@ import cookieParser from "cookie-parser";
 
 import router from "./infrastructure/web/routes";
 
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+const swaggerDocument = YAML.load('./swagger.yaml');
+
 import env from "./config/env";
 import { requestLogger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/errorHandler";
 
-// Création intance app express
+/**
+ * Création intance app express
+ * @type {Express} 
+ */
 const app = express();
 
 app.use(helmet());
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // mw pour pouvoir lire les cookies plus facilement
 app.use(cookieParser());
 
-// Port d'écoute
+/**
+ * // Port d'écoute
+ * @type {number}
+ */
 const { PORT } = env;
 
 // un middleware est executé avant que la requête n'atteigne la route spécifique
