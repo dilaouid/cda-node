@@ -8,6 +8,10 @@ import cookieParser from "cookie-parser";
 
 import router from "./infrastructure/web/routes";
 
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+const swaggerDocument = YAML.load('./swagger.yaml');
+
 import env from "./config/env";
 import { requestLogger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/errorHandler";
@@ -19,6 +23,8 @@ import { errorHandler } from "./middlewares/errorHandler";
 const app = express();
 
 app.use(helmet());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // mw pour pouvoir lire les cookies plus facilement
 app.use(cookieParser());
