@@ -12,7 +12,10 @@ import env from "./config/env";
 import { requestLogger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/errorHandler";
 
-// Création intance app express
+/**
+ * Création intance app express
+ * @type {Express} 
+ */
 const app = express();
 
 app.use(helmet());
@@ -20,7 +23,10 @@ app.use(helmet());
 // mw pour pouvoir lire les cookies plus facilement
 app.use(cookieParser());
 
-// Port d'écoute
+/**
+ * // Port d'écoute
+ * @type {number}
+ */
 const { PORT } = env;
 
 // un middleware est executé avant que la requête n'atteigne la route spécifique

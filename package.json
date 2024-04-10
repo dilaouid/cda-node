@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc --watch",
     "dev": "concurrently \"tsc --watch\" \"tsnd --respawn src/app.ts\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doc" : "typedoc"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "concurrently": "^8.0.1",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
+    "typedoc": "^0.25.13",
     "typescript": "^5.4.4"
   },
   "dependencies": {
