@@ -53,7 +53,34 @@
 
 - jest (js) + supertest (simuler une requête http)
 
-## outils à connaitre TF e3e
+## outils à connaitre TF e2e
 
 - Seleninum (outil très complet)
 - Cypress (rapide et facile à installer) js 
+
+- rdv 15h25 bon café !!!!
+
+La mise en place de test permet de rendre plus pérenne votre code 
+
+=> TDD 
+
+Test Driven Developpement 
+
+=> d'abord vous écrire que ce vous voulez réaliser Test 
+=> écrire le code / traitement / feature 
+
+// créer un nouveau dossier dans jour3 => test
+// cd jour3/test
+// npm init --yes
+// npm i -D jest
+// modifier le fichier package.json du dossier test
+
+// si vous utiliser le système de module CJ (module.exports / require)
+"scripts": {
+    "test": "jest"
+}
+
+// si vous utilisez le système de module ES (export import)
+"scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll"
+}
