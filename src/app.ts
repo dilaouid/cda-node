@@ -15,6 +15,7 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 import env from "./config/env";
 import { requestLogger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/errorHandler";
+import { refreshTokenMiddleware } from "./middlewares/refreshToken";
 
 /**
  * Création intance app express
@@ -22,12 +23,15 @@ import { errorHandler } from "./middlewares/errorHandler";
  */
 const app = express();
 
+// mw pour pouvoir lire les cookies plus facilement
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(helmet());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// mw pour pouvoir lire les cookies plus facilement
-app.use(cookieParser());
 
 /**
  * // Port d'écoute
@@ -44,6 +48,7 @@ function middleware1(req: Request, res: Response, next: NextFunction) {
 // applique le middleware1 à toutes les requêtes entrantes avant qu'elles n'atteignent les routes
 // spécifiques
 app.use(requestLogger);
+app.use(refreshTokenMiddleware);
 
 // [GET] http://localhost:8000/
 app.get("/", middleware1, function (req: Request, res: Response) {

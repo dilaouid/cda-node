@@ -7,15 +7,16 @@ import jwt from 'jsonwebtoken';
 const { JWT_SECRET } = env;
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
-    const { token } = req.cookies;
-    if (!token)
+    const { accessToken } = req.cookies;
+    if (!accessToken)
         return response(res, { statusCode: 403, message: 'Token missing'});
     try {
         // on décode le jwt dans le cookie 'token' avec notre secret
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(accessToken, JWT_SECRET);
+        const { id, name } = decoded as jwt.JwtPayload;
 
         // On ajoute le payload dans la propriété req pour pouvoir l'utiliser dans les routes
-        req.push(decoded);
+        req.user = { id, name };
 
         // On passe au controller ou au mw suivant: tout s'est bien passé
         next();

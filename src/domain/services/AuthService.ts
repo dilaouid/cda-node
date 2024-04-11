@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../entities/User';
 import env from '../../config/env';
 
 const { REFRESH_SECRET, JWT_SECRET } = env;
@@ -10,6 +9,17 @@ export class AuthService {
     // générer un JWT pour un user avec une durée de validité de 15 mn
     issueAccessToken(id: string): string {
         return jwt.sign({ userId: id }, JWT_SECRET, { expiresIn: '15m' });
+    }
+
+    issueRefreshToken(id: string): string {
+        // on crée un refreshToken qui va durer longtemps (genre 7j)
+        const refreshToken = jwt.sign({ userId: id}, REFRESH_SECRET, { expiresIn: '7d' });
+
+        // On stocke le token de rafraichissement en mémoire pour pouvoir le révoquer plus tard
+        this.refreshTokenStore.set(id, refreshToken);
+
+        // On retourne le JWT pour s'en servir dans le controller (écriture de cookies)
+        return refreshToken;
     }
 
     refreshAccessToken(refreshToken: string): string | void {
