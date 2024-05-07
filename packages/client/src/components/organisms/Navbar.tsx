@@ -1,16 +1,14 @@
 import { Link } from '@tanstack/react-router';
 
-import { Container, Navbar as RBNavbar, Nav, Button, Spinner } from 'react-bootstrap';
+import { Container, Navbar as RBNavbar, Nav, Button } from 'react-bootstrap';
 import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
 
 
 import { NavbarLogo } from '../atoms/navbar/NavbarLogo';
 import NavItem from '../atoms/navbar/NavItem';
 import { useAuthStore } from '../../store/authStore';
-import { useState } from 'react';
 
 export const Navbar = () => {
-    const [ loading, setLoading ] = useState<boolean>(false);
     const { isAuthenticated } = useAuthStore();
 
     return (
@@ -29,8 +27,8 @@ export const Navbar = () => {
                         <NavItem to="/blog">Blog</NavItem>
                         { isAuthenticated && <NavItem to="/library">Rédiger un article</NavItem> }
                     </Nav>
-                    { isAuthenticated && <Button variant="danger" href="/logout"><AiOutlineLogout /> | { loading ? <Spinner size='sm' /> :  'Se déconnecter' } </Button> }
-                    { !isAuthenticated && <Button variant="danger" href="/login"><AiOutlineLogin /> | Se connecter </Button> }
+                    { isAuthenticated && <Button variant="danger" href="/logout"><AiOutlineLogout /> | Se déconnecter</Button> }
+                    { !isAuthenticated && <Button variant="danger" href="/login"><AiOutlineLogin /> | Se connecter</Button> }
                 </RBNavbar.Collapse>
             </Container>
         </RBNavbar>
