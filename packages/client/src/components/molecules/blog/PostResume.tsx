@@ -13,10 +13,10 @@ export const PostResume: React.FC<PostResumeProps> = ({ post }) => {
             <p>{ post.content.slice(0, 100) } ...</p>
             <ReadMore to={`/blog/${post.id}`}>Lire l'article</ReadMore>
             <div className="d-flex">
-                <div>
-                    <p className="fw-bold mb-0">{ post.author.name }</p>
-                    <p className="text-muted mb-0">{ post.date }</p>
-                </div>
+                <p className="fw-bold mb-0">{ post.author.username }</p>
+            </div>
+            <div className="d-flex">
+                <p className="text-muted mb-0">{ post.date }</p>
             </div>
         </div>
     </Col>)
