@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 
 import { Container, Navbar as RBNavbar, Nav, Button } from 'react-bootstrap';
 import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
@@ -7,9 +7,21 @@ import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
 import { NavbarLogo } from '../atoms/navbar/NavbarLogo';
 import NavItem from '../atoms/navbar/NavItem';
 import { useAuthStore } from '../../store/authStore';
+import { useLogout } from '../../hooks/useLogout';
 
 export const Navbar = () => {
-    const { isAuthenticated } = useAuthStore();
+    const { isAuthenticated, toggleAuth, setUser } = useAuthStore();
+    const navigate = useNavigate();
+
+    const logoutMutation = useLogout();
+
+    const handleLogout = () => {
+        logoutMutation.mutateAsync().then(() => {
+            setUser(null);
+            toggleAuth(false);
+            navigate({ to: '/' });
+        });
+    }
 
     return (
         <RBNavbar expand='md' variant='dark' bg='black' sticky='top'>
@@ -27,7 +39,7 @@ export const Navbar = () => {
                         <NavItem to="/blog">Blog</NavItem>
                         { isAuthenticated && <NavItem to="/library">Rédiger un article</NavItem> }
                     </Nav>
-                    { isAuthenticated && <Button variant="danger" href="/logout"><AiOutlineLogout /> | Se déconnecter</Button> }
+                    { isAuthenticated && <Button variant="warning" onClick={handleLogout}><AiOutlineLogout /> | Se déconnecter</Button> }
                     { !isAuthenticated && <Button variant="danger" href="/login"><AiOutlineLogin /> | Se connecter</Button> }
                 </RBNavbar.Collapse>
             </Container>

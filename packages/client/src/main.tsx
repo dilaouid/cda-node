@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 
+import { AuthWrapper } from './components/wrappers/AuthWrapper'
+
 export const router = createRouter({ routeTree })
 import 'aos/dist/aos.css';
 
@@ -25,7 +27,9 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AuthWrapper>
+          <RouterProvider router={router} />
+        </AuthWrapper>
       </QueryClientProvider>
     </StrictMode>,
   )

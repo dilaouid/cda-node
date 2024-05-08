@@ -23,6 +23,8 @@ export const refreshTokenMiddleware = async (req: Request, res: Response, next: 
         // Passage au middleware suivant
         next();
     } catch (error) {
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
         console.error(error);
     }
 };

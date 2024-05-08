@@ -76,10 +76,19 @@ export const register = async (req: Request, res: Response) => {
 
 export const me = async (req: CustomRequest, res: Response) => {
     try {
-        console.log(req);
-        
         // On récupère l'utilisateur stocké dans le token
         response(res, { statusCode: 200, message: 'OK', data: req.user });
+    } catch(error) {
+        console.error(error);
+        response(res, {statusCode: 500, message: 'Internal server error'})
+    }
+}
+
+export const logout = async (req: Request, res: Response) => {
+    try {
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+        response(res, { statusCode: 200, message: 'Logout successful' });
     } catch(error) {
         console.error(error);
         response(res, {statusCode: 500, message: 'Internal server error'})

@@ -49,9 +49,12 @@ export class AuthService {
                 const newAccessToken = this.issueAccessToken(payload.userId);
                 return newAccessToken;
             } else {
-                console.table({storedRefreshToken, refreshToken});
+                // delete access token cookies and refresh token cookies
+                if (user) {
+                    user.refreshToken = ''
+                    this.UserRepository.updateUser(user);
+                }
 
-                
                 throw new Error('Invalid refresh token');
             }
         } catch(err) {
