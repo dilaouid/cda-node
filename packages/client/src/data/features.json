@@ -1,0 +1,17 @@
+[
+    {
+        "id": "drizzle",
+        "title": "Drizzle ORM",
+        "description": "On va faire dégager les mocks, et passer par un véritable ORM avec PostgreSQL !Histoire de compléter là où on s'est arrêté la dernière fois."
+    },
+    {
+        "id": "tests",
+        "title": "Tests",
+        "description": "Pour beaucoup, les tests n'étaient pas très clairs. On va revenir rapidement dessus, sans pour autant y passer des plombes. Simplement revoir rapidement cette notion."
+    },
+    {
+        "id": "ws",
+        "title": "Socket.io",
+        "description": "Les websockets vous permettront de créer nombre de features très sympathiques. On va voir ça également, dans la réalisation d'une messagerie instantanée simpliste."
+    }
+]
