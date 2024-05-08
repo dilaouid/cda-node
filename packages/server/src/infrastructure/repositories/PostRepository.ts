@@ -24,8 +24,14 @@ export class PostsRepository {
     getPostById(id: string): PostWithComments | undefined {
         const post = this.posts.find(post => post.id === id);
         if (!post) return undefined;
+        const author = this.userRepo.getUserById(post.author as string);
+        post.author = author as User;
 
         const comments = this.commentRepository.getCommentsByPostId(id);
+        comments.forEach(comment => {
+            const user = this.userRepo.getUserById(comment.author as string);
+            comment.author = user as User;
+        });
         return { ...post, comments };
     }
 

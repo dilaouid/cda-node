@@ -3,28 +3,28 @@
       "id": "6a8c9a40-d239-4680-9c42-19853636cfa2",
       "postId": "6912b0a3-0e00-4b33-ac62-aff1a93f6fe4",
       "content": "Trop bien",
-      "authorId": "72f33e4d-b56f-4129-988b-3409813d7eb6",
+      "author": "72f33e4d-b56f-4129-988b-3409813d7eb6",
       "date": "2023-01-02"
     },
     {
       "id": "bb146b12-1fae-41bd-b17d-4d7f6161028d",
       "postId": "6912b0a3-0e00-4b33-ac62-aff1a93f6fe4",
       "content": "J'ai rien capté?",
-      "authorId": "2f5d0e5a-f3aa-4fe8-85df-baeda4d2a65a",
+      "author": "2f5d0e5a-f3aa-4fe8-85df-baeda4d2a65a",
       "date": "2023-01-05"
     },
     {
       "id": "eea877da-820b-4f15-add1-e55c32001a13",
       "postId": "91597b53-25c5-40b0-bfe0-29375b42dd20",
       "content": "Commentaire random test un deux ca marche ?",
-      "authorId": "fc685e18-a5b4-4c75-aaae-b96738fa7527",
+      "author": "fc685e18-a5b4-4c75-aaae-b96738fa7527",
       "date": "2023-02-16"
     },
     {
       "id": "ff3d404f-b333-4656-b026-182a72170b68",
       "postId": "91597b53-25c5-40b0-bfe0-29375b42dd20",
       "content": "La nuit il fait noir",
-      "authorId": "fc685e18-a5b4-4c75-aaae-b96738fa7527",
+      "author": "fc685e18-a5b4-4c75-aaae-b96738fa7527",
       "date": "2023-02-20"
     }
   ]
