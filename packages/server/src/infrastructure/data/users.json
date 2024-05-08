@@ -18,5 +18,10 @@
         "id": "2f5d0e5a-f3aa-4fe8-85df-baeda4d2a65a",
         "username": "Kaito Kuroba",
         "password": "$2a$04$WVIoo39rbisVuA2M2QDpW.5ZwKHCGSsZ7LWOeg2pKPAAYigAtsYu"
+    },
+    {
+        "id": "fc685e18-a5b4-4c75-aaae-b96738fa7527",
+        "username": "Kudo Yukiko",
+        "password": "$2a$04$WVIoo39rbisVuA2M2QDpW.5ZwKHCGSsZ7LWOeg2pKPAAYigAtsYu"
     }
 ]

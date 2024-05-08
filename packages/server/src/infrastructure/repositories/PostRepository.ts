@@ -25,15 +25,15 @@ export class PostsRepository {
         const post = this.posts.find(post => post.id === id);
         if (!post) return undefined;
         const author = this.userRepo.getUserById(post.author as string);
-        post.author = author as User;
-
+        if (!author) return undefined;
+        
         const comments = this.commentRepository.getCommentsByPostId(id);
         comments.forEach(comment => {
             const user = this.userRepo.getUserById(comment.author as string);
             comment.author = user as User;
             delete comment.postId;
         });
-        return { ...post, comments };
+        return { ...post, author, comments };
     }
 
     // Récupérer tout les posts existants dans notre posts.json

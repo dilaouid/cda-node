@@ -30,10 +30,8 @@ export class UserRepository {
         // On va appliquer un HOF (find) pour trouver seulement l'utilisateur qui nous intéresse, en retirant le mot de passe
         const user = users.find(user => user.id === id);
         if (!user) return undefined;
-        return {
-            ...user,
-            password: undefined
-        }
+        user.password = undefined;
+        return user;
     }
 
     /**
