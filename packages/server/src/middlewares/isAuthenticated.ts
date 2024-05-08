@@ -4,6 +4,7 @@ import env from "../config/env";
 
 import jwt from 'jsonwebtoken';
 import { CustomRequest } from "../types/express";
+import { table } from "console";
 
 const { JWT_SECRET } = env;
 
@@ -14,10 +15,11 @@ export const isAuthenticated = (req: CustomRequest, res: Response, next: NextFun
     try {
         // on décode le jwt dans le cookie 'token' avec notre secret
         const decoded = jwt.verify(accessToken, JWT_SECRET);
-        const { id, name } = decoded as jwt.JwtPayload;
+        const { userId, name } = decoded as jwt.JwtPayload;
 
         // On ajoute le payload dans la propriété req pour pouvoir l'utiliser dans les routes
-        req.user = { id, name };
+        req.user = { userId, name };
+        table(decoded);
 
         // On passe au controller ou au mw suivant: tout s'est bien passé
         next();
