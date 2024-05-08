@@ -31,6 +31,7 @@ export class PostsRepository {
         comments.forEach(comment => {
             const user = this.userRepo.getUserById(comment.author as string);
             comment.author = user as User;
+            delete comment.postId;
         });
         return { ...post, comments };
     }

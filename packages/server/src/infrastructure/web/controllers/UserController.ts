@@ -22,7 +22,7 @@ export const login = async (req: Request, res: Response) => {
             return response(res, { statusCode: 401, message: 'Authentication failed' });
 
         // On va comparer le mot de passe hashé (entre celui du formulaire et celui enregistré dans notre json)
-        const isValid = await bcrypt.compare(password, user.password);
+        const isValid = await bcrypt.compare(password, user.password as string);
         if (!isValid)
             return response(res, { statusCode: 401, message: 'Authentication failed' });
 
