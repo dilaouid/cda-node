@@ -1,7 +1,10 @@
 import { useState } from "react"
 import { Form, Button } from "react-bootstrap"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
+
 import { useLogin } from "../../../hooks/useLogin"
+
+import { useAuthStore } from "../../../store/authStore"
 
 export const FormLogin = () => {
     const [ username, setUsername ] = useState<string>('')
@@ -9,14 +12,19 @@ export const FormLogin = () => {
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ message, setMessage ] = useState<string>('')
 
+    const { setUser, toggleAuth } = useAuthStore();
+    const navigate = useNavigate();
+
     const loginMutation = useLogin();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         loginMutation.mutateAsync({ username, password }).then(data => {
-            console.log(data);
+            setUser(data.data.user);
+            toggleAuth(true);
             setLoading(false);
+            navigate({ to: '/' });
         }).catch((err) => {
             console.error(err.toString())
             setMessage(err.toString())
