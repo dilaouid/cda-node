@@ -21,6 +21,22 @@ export class UserRepository {
     }
 
     /**
+     * Récupère un utilisateur en fonction de son id
+     */
+    getUserById(id: string) {
+        // On commence par récupérer tout les utilisateurs
+        const users = this.getAllUsers();  
+
+        // On va appliquer un HOF (find) pour trouver seulement l'utilisateur qui nous intéresse, en retirant le mot de passe
+        const user = users.find(user => user.id === id);
+        if (!user) return undefined;
+        return {
+            ...user,
+            password: undefined
+        }
+    }
+
+    /**
      * Récupère un utilisateur en fonction de son username
      */
     getUserByUsername(username: string) {

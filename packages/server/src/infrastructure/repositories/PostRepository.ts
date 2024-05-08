@@ -2,11 +2,14 @@ import { Post, PostWithComments } from "../../domain/entities/Post";
 import fs from 'fs';
 import path from "path";
 import { CommentRepository } from "./CommentRepository";
+import { UserRepository } from "./UserRepository";
+import { User } from "../../domain/entities/User";
 
 // Repository qui gère le CRUD des posts
 export class PostsRepository {
     private posts: Post[] = [];
     private commentRepository = new CommentRepository();
+    private userRepo = new UserRepository();
 
     // Le chemin du fichier JSON des pots (à partir du repertoire courant)
     private filePath = path.join(__dirname, '..', 'data', 'posts.json');
@@ -30,6 +33,12 @@ export class PostsRepository {
     getAllPosts(): Post[] {
         const data = fs.readFileSync(this.filePath, 'utf-8');
         const posts = JSON.parse(data);
+
+        // get the user for the author of the post
+        posts.forEach((post: Post) => {
+            const user = this.userRepo.getUserById(post.author as string);
+            post.author = user as User;
+        });
 
         return posts;
     }
