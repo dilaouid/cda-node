@@ -30,7 +30,6 @@ export class UserRepository {
         // On va appliquer un HOF (find) pour trouver seulement l'utilisateur qui nous intéresse, en retirant le mot de passe
         const user = users.find(user => user.id === id);
         if (!user) return undefined;
-        user.password = undefined;
         return user;
     }
 
@@ -60,5 +59,23 @@ export class UserRepository {
 
         // On mets à jour le fichier users.json
         fs.writeFileSync(this.filePath, JSON.stringify(users, null, 2));
+    }
+
+    /**
+     * Met à jour un utilisateur
+     */
+    updateUser(user: User) {
+        // On commence par récupérer tout les utilisateurs
+        const users = this.getAllUsers();
+
+        // On mets à jour le tableau récupéré, avec le nouvel utilisateur
+        const updatedUsers = users.map(u => {
+            if (u.id === user.id)
+                return user;
+            return u;
+        });
+
+        // On mets à jour le fichier users.json
+        fs.writeFileSync(this.filePath, JSON.stringify(updatedUsers, null, 2));
     }
 }

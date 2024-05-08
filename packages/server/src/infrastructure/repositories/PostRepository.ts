@@ -26,10 +26,12 @@ export class PostsRepository {
         if (!post) return undefined;
         const author = this.userRepo.getUserById(post.author as string);
         if (!author) return undefined;
+        delete author.password;
         
         const comments = this.commentRepository.getCommentsByPostId(id);
         comments.forEach(comment => {
             const user = this.userRepo.getUserById(comment.author as string);
+            delete user?.password;
             comment.author = user as User;
             delete comment.postId;
         });
@@ -44,6 +46,7 @@ export class PostsRepository {
         // get the user for the author of the post
         posts.forEach((post: Post) => {
             const user = this.userRepo.getUserById(post.author as string);
+            delete user?.password;
             post.author = user as User;
         });
 

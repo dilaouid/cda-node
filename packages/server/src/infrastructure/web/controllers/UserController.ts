@@ -6,6 +6,7 @@ import { UserRepository } from '../../repositories/UserRepository';
 import { AuthService } from '../../../domain/services/AuthService';
 
 import { response } from '../../../utils/response';
+import { CustomRequest } from '../../../types/express';
 
 const { NODE_ENV } = env;
 
@@ -71,4 +72,16 @@ export const register = async (req: Request, res: Response) => {
         console.error(error);
         response(res, {statusCode: 500, message: 'Internal server error'})
     } 
+}
+
+export const me = async (req: CustomRequest, res: Response) => {
+    try {
+        console.log(req);
+        
+        // On récupère l'utilisateur stocké dans le token
+        response(res, { statusCode: 200, message: 'OK', data: req.user });
+    } catch(error) {
+        console.error(error);
+        response(res, {statusCode: 500, message: 'Internal server error'})
+    }
 }
