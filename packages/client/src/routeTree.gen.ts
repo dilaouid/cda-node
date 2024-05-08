@@ -11,12 +11,19 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as BlogImport } from './routes/blog'
 import { Route as IndexImport } from './routes/index'
 import { Route as PostsPostIdImport } from './routes/posts.$postId'
 
 // Create/Update Routes
+
+const RegisterRoute = RegisterImport.update({
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const LoginRoute = LoginImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
@@ -53,6 +60,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/register': {
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
     '/posts/$postId': {
       preLoaderRoute: typeof PostsPostIdImport
       parentRoute: typeof rootRoute
@@ -66,6 +77,7 @@ export const routeTree = rootRoute.addChildren([
   IndexRoute,
   BlogRoute,
   LoginRoute,
+  RegisterRoute,
   PostsPostIdRoute,
 ])
 

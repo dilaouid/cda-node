@@ -49,12 +49,13 @@ export const login = async (req: Request, res: Response) => {
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { username, password } = req.body;
-
-        console.log(req.body);
+        const { username, password, confirmPassword } = req.body;
         
-        if (!username?.trim() || !password?.trim())
+        if (!username?.trim() || !password?.trim() || !confirmPassword?.trim())
             return response(res, { statusCode: 400, message: 'Invalid username or password' });
+
+        if (password !== confirmPassword)
+            return response(res, { statusCode: 400, message: 'Passwords do not match' });
 
         // Vérification de l'unicité du nom d'utilisateur saisit
         const existingUsername = userRepo.getUserByUsername(username);

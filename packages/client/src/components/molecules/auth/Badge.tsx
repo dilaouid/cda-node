@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import { GoPersonFill } from "react-icons/go";
 
-const Icon = styled.div`
-    background: var(--bs-orange);
+const Icon = styled.div<{ $alt?: boolean }>`
+    background: ${props => props.$alt ? 'var(--bs-primary)' : 'var(--bs-danger)'};
     color: var(--bs-white);
     display: flex;
     justify-content: center;
@@ -14,8 +14,12 @@ const Icon = styled.div`
     margin-bottom: 1rem;
 `
 
-export const Badge = () => {
-    return (<Icon className="bs-icon-xl bs-icon-circle bs-icon my-4">
+interface BadgeProps {
+    alt?: boolean;
+}
+
+export const Badge: React.FC<BadgeProps> = ({ alt }) => {
+    return (<Icon className="bs-icon-xl bs-icon-circle bs-icon my-4" $alt={alt}>
         <GoPersonFill />
     </Icon>)
 }
