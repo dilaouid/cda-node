@@ -37,7 +37,7 @@ export const Navbar = () => {
                     <Nav className="me-auto">
                         <NavItem to="/">Page d'accueil</NavItem>
                         <NavItem to="/blog">Blog</NavItem>
-                        { isAuthenticated && <NavItem to="/library">Rédiger un article</NavItem> }
+                        { isAuthenticated && <NavItem to="/create">Rédiger un article</NavItem> }
                     </Nav>
                     { isAuthenticated && <Button variant="warning" onClick={handleLogout}><AiOutlineLogout /> | Se déconnecter</Button> }
                     { !isAuthenticated && <Button variant="danger" href="/login"><AiOutlineLogin /> | Se connecter</Button> }

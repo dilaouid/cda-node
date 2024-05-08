@@ -8,8 +8,11 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 
 import { AuthWrapper } from './components/wrappers/AuthWrapper'
+import { useAuthStore } from './store/authStore'
 
-export const router = createRouter({ routeTree })
+export const router = createRouter({ routeTree, context: {
+  auth: useAuthStore.getInitialState()
+} })
 import 'aos/dist/aos.css';
 
 export const queryClient = new QueryClient({

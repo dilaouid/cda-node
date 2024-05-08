@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
 import { Navbar } from '../components/organisms/Navbar'
@@ -15,6 +15,12 @@ const RootComponent = () => {
   );
 };
 
-export const Route = createRootRoute({
+interface Context {
+  auth: {
+    isAuthenticated: boolean
+  }
+}
+
+export const Route = createRootRouteWithContext<Context>()({
   component: RootComponent,
 });
