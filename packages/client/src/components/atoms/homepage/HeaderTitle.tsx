@@ -15,8 +15,8 @@ interface HeaderTitleProps {
 export const HeaderTitle: React.FC<HeaderTitleProps> = ({ children }) => {
     return (
         <AlataTitle className="text-uppercase fw-bold">
-            <HighlightedTitle>{ children?.toString().split(" ")[0] + " " }</HighlightedTitle>
-            { children?.toString().split(" ").slice(1).join(" ") }
+            <HighlightedTitle>{ children?.toString().split(" ")[0] }</HighlightedTitle>
+            { " " + children?.toString().split(" ").slice(1).join(" ") }
         </AlataTitle>
     )
 };
