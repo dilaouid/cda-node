@@ -4,8 +4,7 @@ import { Postpage } from '../components/templates/Postpage'
 
 export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params }) => {
-    const { postId } = params
-    return await getPost(postId)
+    return getPost(params.postId)
   },
   component: Post
 })
