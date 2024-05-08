@@ -18,6 +18,8 @@ interface PostpageProps {
 }
 
 export const Postpage: React.FC<PostpageProps> = ({ post }) => {
+    if (!post) return (<></>);
+
     return (
         <Container>
             <h1 className="text-center">{post.title}</h1>

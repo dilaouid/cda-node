@@ -14,6 +14,7 @@ interface CommentProps {
 
 export const Comment: React.FC<CommentProps> = ({ comment }) => {
     const { user } = useAuthStore();
+    if (!comment) return <></>;
 
     return (
         <Card>

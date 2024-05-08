@@ -23,19 +23,29 @@ export class PostsRepository {
     // Récupérer un post par son id
     getPostById(id: string): PostWithComments | undefined {
         const post = this.posts.find(post => post.id === id);
-        if (!post) return undefined;
-        const author = this.userRepo.getUserById(post.author as string);
-        if (!author) return undefined;
-        delete author.password;
         
+        if (!post) {
+            console.error('Post not found');
+            return undefined;
+        }
+        const author = this.userRepo.getUserById(post.author as string);
+        if (!author) {
+            console.error('Author not found')
+            return undefined;
+        }
+        delete author.password;
+        delete author.refreshToken;
+
+        const cleanComments = [];
+
         const comments = this.commentRepository.getCommentsByPostId(id);
         comments.forEach(comment => {
             const user = this.userRepo.getUserById(comment.author as string);
             delete user?.password;
-            comment.author = user as User;
             delete comment.postId;
+            cleanComments.push({ ...comment, author: user });
         });
-        return { ...post, author, comments };
+        return { ...post, author: author, comments };
     }
 
     // Récupérer tout les posts existants dans notre posts.json
