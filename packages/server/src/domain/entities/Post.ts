@@ -1,3 +1,5 @@
+import { Comment } from "./Comment";
+
 export interface Post {
     id?: string;
     title: string;
@@ -6,3 +8,7 @@ export interface Post {
     comments?: Comment[];
     date: Date;
 };
+
+export interface PostWithComments extends Post {
+    comments: Comment[];
+}

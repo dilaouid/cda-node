@@ -1,4 +1,4 @@
-import { Post } from "../../domain/entities/Post";
+import { Post, PostWithComments } from "../../domain/entities/Post";
 import fs from 'fs';
 import path from "path";
 import { CommentRepository } from "./CommentRepository";
@@ -18,8 +18,12 @@ export class PostsRepository {
     }
 
     // Récupérer un post par son id
-    getPostById(id: string) {
-        return this.posts.find(post => post.id === id);
+    getPostById(id: string): PostWithComments | undefined {
+        const post = this.posts.find(post => post.id === id);
+        if (!post) return undefined;
+
+        const comments = this.commentRepository.getCommentsByPostId(id);
+        return { ...post, comments };
     }
 
     // Récupérer tout les posts existants dans notre posts.json
@@ -27,11 +31,7 @@ export class PostsRepository {
         const data = fs.readFileSync(this.filePath, 'utf-8');
         const posts = JSON.parse(data);
 
-        return posts.map((post: Post) => {
-            if (!post.id) return post;
-            const comments = this.commentRepository.getCommentsByPostId(post.id);
-            return { ...post, comments };
-        })
+        return posts;
     }
 
     // Charger les données des posts à partir du fichier JSON (en private car utilisé seulement dans la class)

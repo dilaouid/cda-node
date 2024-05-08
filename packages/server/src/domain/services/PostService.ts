@@ -1,4 +1,5 @@
-import { Post } from "../entities/Post";
+import { Post, PostWithComments } from "../entities/Post";
+import { Comment } from "../entities/Comment";
 import { PostsRepository } from "../../infrastructure/repositories/PostRepository";
 import crypto from 'crypto'
 
@@ -9,7 +10,7 @@ export class PostService {
         this.postsRepository = new PostsRepository();
     }
 
-    getPostById(id: string): Post | undefined {
+    getPostById(id: string): PostWithComments | undefined {
         return this.postsRepository.getPostById(id);
     }
 
