@@ -61,11 +61,8 @@ export class PostsRepository {
 
     // ajouter un post à notre post.json
     savePosts(post: Post[]) {
-        // On convertit les données en JSON et on les écrit dans le fichier
-        const data = JSON.stringify(post);
-
         // On écrit les données dans le fichier de manière synchrone
-        fs.writeFileSync(this.filePath, data);
+        fs.writeFileSync(this.filePath, JSON.stringify(post, null, 2));
     }
 
     // on récupére l'id d'un post en fonction de son titre
