@@ -29,7 +29,7 @@ export const Postpage: React.FC<PostpageProps> = ({ post }) => {
             <p className="text-muted">{ post.date }</p>
             <hr />
             <h3>Commentaires</h3>
-            { post.comments.map(comment => (
+            { post.comments && post.comments.map(comment => (
                 <Comment key={comment.id} comment={comment} />
             )) }
         </Container>

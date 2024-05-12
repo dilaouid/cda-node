@@ -11,5 +11,6 @@ export const PostsResume: React.FC<PostsResumeProps> = ({ posts }) => {
         { posts.map((post: IPostResume) => (
             <PostResume key={post.id} post={post} />
         )) }
+        { posts.length == 0 && <p className="text-center">Aucun article à afficher</p> }
     </Row>)
 };
