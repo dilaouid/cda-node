@@ -1,81 +1,92 @@
-import { User } from "../../domain/entities/User";
-import fs from 'fs';
-import path from "path";
-import crypto from 'crypto';
+import { db } from "../data";
+import { users } from "../data/schema";
+import { User, NewUser } from "../../domain/entities/User";
+import { eq } from "drizzle-orm";
+
 
 /**
  * Repository qui gère le CRUD des utilisateurs
  */
 export class UserRepository {
-    private filePath = path.join(__dirname, '..', 'data', 'users.json');
-
     /**
      * Récupère tous les utilisateurs
      */
-    getAllUsers(): User[] {
-        // On récupére en texte brut le contenu du fichier users.json
-        const data = fs.readFileSync(this.filePath, 'utf-8');
-
-        // On retourne tout les utilisateurs, formatés cette fois ci en JSON
-        return JSON.parse(data);
+    getAllUsers() {
+        try {
+            return db.query.users.findMany({
+                columns: {
+                    id: true,
+                    username: true
+                }
+            });
+        } catch(err) {
+            console.error(err);
+            throw new Error("Impossible de récupérer les utilisateurs")
+        }
     }
 
     /**
      * Récupère un utilisateur en fonction de son id
      */
     getUserById(id: string) {
-        // On commence par récupérer tout les utilisateurs
-        const users = this.getAllUsers();  
-
-        // On va appliquer un HOF (find) pour trouver seulement l'utilisateur qui nous intéresse, en retirant le mot de passe
-        const user = users.find(user => user.id === id);
-        if (!user) return undefined;
-        return user;
+        try {
+            return db.query.users.findFirst({
+                where: eq(users.id, id),
+                columns: {
+                    id: true,
+                    username: true
+                }
+            })
+            // SELECT id, username FROM users WHERE id = $1
+        } catch(err) {
+            console.error(err);
+            throw new Error("Impossible de récupérer l'utilisateur")
+        }
     }
 
     /**
      * Récupère un utilisateur en fonction de son username
      */
     getUserByUsername(username: string) {
-        // On commence par récupérer tout les utilisateurs
-        const users = this.getAllUsers();  
-
-        // On va appliquer un HOF (find) pour trouver seulement l'utilisateur qui nous intéresse
-        return users.find(user => user.username === username);
+        try {
+            return db.query.users.findFirst({
+                where: eq(users.username, username),
+                columns: {
+                    id: true,
+                    username: true
+                }
+            })
+        } catch(err) {
+            console.error(err);
+            throw new Error("Impossible de récupérer l'utilisateur")
+        }
     }
 
     /**
      * Création d'un nouvel utilisateur
      */
-    createUser(user: User) {
-        // On commence par récupérer tout les utilisateurs
-        const users = this.getAllUsers();
-
-        // On mets à jour le tableau récupéré, avec le nouvel utilisateur
-        users.push({
-            ...user,
-            id: crypto.randomUUID()
-        })
-
-        // On mets à jour le fichier users.json
-        fs.writeFileSync(this.filePath, JSON.stringify(users, null, 2));
+    createUser(user: NewUser) {
+        try {
+            return db.insert(users).values(user).execute();
+        } catch (err) {
+            console.error(err);
+            throw new Error("Impossible de créer l'utilisateur")
+        }
     }
 
     /**
      * Met à jour un utilisateur
      */
     updateUser(user: User) {
-        // On commence par récupérer tout les utilisateurs
-        const users = this.getAllUsers();
-
-        // On mets à jour le tableau récupéré, avec le nouvel utilisateur
-        const updatedUsers = users.map(u => {
-            if (u.id === user.id)
-                return user;
-            return u;
-        });
-
-        // On mets à jour le fichier users.json
-        fs.writeFileSync(this.filePath, JSON.stringify(updatedUsers, null, 2));
+        try {
+            return db.update(users)
+                .set(user)
+                .where(
+                    eq(users.id, user.id)
+                ).execute();
+        } catch (err) {
+            console.error(err);
+            throw new Error("Impossible de mettre à jour l'utilisateur")
+        }
     }
 }
