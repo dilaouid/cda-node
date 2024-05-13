@@ -1,15 +1,10 @@
-import { Comment } from "./Comment";
-import { User } from "./User";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { posts } from "../../infrastructure/data/schema";
 
-export interface Post {
-    id?: string;
-    title: string;
-    content: string;
-    author: string | User;
-    comments?: Comment[];
-    date: Date;
-};
+// Ce type represente le modele d'un post au moment de sa selection dans la db
+// cad le type Post aura les memes propriétés que la table posts
+export type Post = InferSelectModel<typeof posts>;
 
-export interface PostWithComments extends Post {
-    comments: Comment[];
-}
+// de même pour NewPost: il aura les memes propriétés que la table posts
+// sauf les propriétés qui sont générés automatiquement (comme id par exemple)
+export type NewPost = InferInsertModel<typeof posts>;

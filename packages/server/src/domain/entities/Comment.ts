@@ -1,9 +1,5 @@
-import { User } from "./User";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { comments } from "../../infrastructure/data/schema";
 
-export interface Comment {
-    id?: string;
-    postId?: string;
-    content: string;
-    author: User | string;
-    date: Date;
-}
+export type Comment = InferSelectModel<typeof comments>;
+export type NewComment = InferInsertModel<typeof comments>;

@@ -4,4 +4,5 @@ export interface EnvConfig {
     REFRESH_SECRET: string;
     NODE_ENV: 'development' | 'production' | 'test';
     FRONTEND_URL: string;
+    DATABASE_URL: string;
 }
