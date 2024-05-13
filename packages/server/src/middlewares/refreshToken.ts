@@ -12,7 +12,7 @@ export const refreshTokenMiddleware = async (req: Request, res: Response, next: 
         return next();
 
     try {
-        const newAccessToken = authService.refreshAccessToken(refreshToken);
+        const newAccessToken = await authService.refreshAccessToken(refreshToken);
         // Si le refresh est réussit: on renouvelle l'accesstoken dans nos cookies
         if (newAccessToken) {
             res.cookie('accessToken', newAccessToken, {

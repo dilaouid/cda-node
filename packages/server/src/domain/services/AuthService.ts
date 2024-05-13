@@ -1,11 +1,9 @@
 import jwt from 'jsonwebtoken';
 import env from '../../config/env';
-import fs from 'fs';
-import path from 'path';
 import { UserRepository } from '../../infrastructure/repositories/UserRepository';
+import { User } from '../entities/User';
 
 const { REFRESH_SECRET, JWT_SECRET } = env;
-const usersFilePath = path.resolve(__dirname, '../../../data/users.json');
 
 export class AuthService {
     private refreshTokenStore: Map<string, string> = new Map();
@@ -16,24 +14,23 @@ export class AuthService {
         return jwt.sign({ userId: id }, JWT_SECRET, { expiresIn: '15m' });
     }
 
-    issueRefreshToken(id: string): string {
+    async issueRefreshToken(id: string): Promise<string> {
         // on crée un refreshToken qui va durer longtemps (genre 7j)
         const refreshToken = jwt.sign({ userId: id}, REFRESH_SECRET, { expiresIn: '7d' });
-        const user = this.UserRepository.getUserById(id);
+        const user = await this.UserRepository.getUserById(id, { refreshToken: true });
         if (user) {
-            user.refreshToken = refreshToken;
-            this.UserRepository.updateUser(user);
+            this.UserRepository.updateUser({...user, refreshToken: refreshToken} as User);
         }
 
         // On retourne le JWT pour s'en servir dans le controller (écriture de cookies)
         return refreshToken;
     }
 
-    refreshAccessToken(refreshToken: string): string | void {
+    async refreshAccessToken(refreshToken: string): Promise<string | void> {
         try {
             // On vérifie que le token en paramètre est bien valide
             const payload = jwt.verify(refreshToken, REFRESH_SECRET) as jwt.JwtPayload;
-            const user = this.UserRepository.getUserById(payload.userId);
+            const user = await this.UserRepository.getUserById(payload.userId, { id: true, refreshToken: true });
 
             if (user && user.refreshToken === refreshToken) {
                 // On génère un nouveau token d'accès
@@ -52,7 +49,7 @@ export class AuthService {
                 // delete access token cookies and refresh token cookies
                 if (user) {
                     user.refreshToken = ''
-                    this.UserRepository.updateUser(user);
+                    this.UserRepository.updateUser(user as User);
                 }
 
                 throw new Error('Invalid refresh token');

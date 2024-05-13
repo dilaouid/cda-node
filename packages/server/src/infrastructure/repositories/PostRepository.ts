@@ -1,51 +1,45 @@
-import { Post, PostWithComments } from "../../domain/entities/Post";
-import fs from 'fs';
-import path from "path";
-import { CommentRepository } from "./CommentRepository";
-import { UserRepository } from "./UserRepository";
+import { eq } from "drizzle-orm";
+import { NewPost, Post } from "../../domain/entities/Post";
 import { User } from "../../domain/entities/User";
+import { db } from "../data";
+import { comments, posts, users } from "../data/schema";
 
 // Repository qui gère le CRUD des posts
 export class PostsRepository {
-    private posts: Post[] = [];
-    private commentRepository = new CommentRepository();
-    private userRepo = new UserRepository();
-
-    // Le chemin du fichier JSON des pots (à partir du repertoire courant)
-    private filePath = path.join(__dirname, '..', 'data', 'posts.json');
-
-    constructor() {
-        // on charge les données des pots à partir du fichier JSON dès le constructeur pour
-        // qu'il soient disponibles dans la class
-        this.posts = this.loadPosts();
-    }
-
     // Récupérer un post par son id
-    getPostById(id: string): PostWithComments | undefined {
-        const post = this.posts.find(post => post.id === id);
-        
-        if (!post) {
-            console.error('Post not found');
-            return undefined;
-        }
-        const author = this.userRepo.getUserById(post.author as string);
-        if (!author) {
-            console.error('Author not found')
-            return undefined;
-        }
-        delete author.password;
-        delete author.refreshToken;
+    getPostById(id: string) {
+        try {
+            return db.select({
+                id: posts.id,
+                title: posts.title,
+                content: posts.content,
+                author: {
+                    id: users.id,
+                    username: users.username
+                },
+                date: posts.date,
+                comments: {
+                    id: comments.id,
+                    content: comments.content,
+                    date: comments.date
+                }
+            }).from(posts)
+            .leftJoin(
+                comments, eq(posts.id, comments.postId)
+            ).leftJoin(
+                users, eq(posts.author, users.id)
+            ).where(
+                eq(posts.id, id)
+            ).execute();
 
-        const cleanComments = [];
-
-        const comments = this.commentRepository.getCommentsByPostId(id);
-        comments.forEach(comment => {
-            const user = this.userRepo.getUserById(comment.author as string);
-            delete user?.password;
-            delete comment.postId;
-            cleanComments.push({ ...comment, author: user });
-        });
-        return { ...post, author: author, comments };
+            /* SELECT posts.id, posts.title, posts.content, posts.date, users.id, users.username, comments.id, comments.content,
+                comments.date FROM posts LEFT JOIN comments ON posts.id = comments.postId LEFT JOIN users ON posts.authir = users.id
+                WHERE posts.id = $1
+            */
+        } catch(err) {
+            console.error(err);
+            throw new Error('Impossible de récupérer le post');
+        }
     }
 
     // Récupérer tout les posts existants dans notre posts.json
@@ -70,14 +64,27 @@ export class PostsRepository {
     }
 
     // ajouter un post à notre post.json
-    savePosts(post: Post[]) {
-        // On écrit les données dans le fichier de manière synchrone
-        fs.writeFileSync(this.filePath, JSON.stringify(post, null, 2));
+    savePosts(post: NewPost) {
+        try {
+            return db.insert(posts).values(post).returning({id: posts.id}).execute();
+        } catch(err) {
+            console.error(err);
+            throw new Error('Impossible de sauvegarder le post');
+        }
     }
 
     // on récupére l'id d'un post en fonction de son titre
-    getPostIdByTitle(title: string): string | undefined {
-        const post = this.posts.find(post => post.title === title);
-        return post?.id;
+    getPostIdByTitle(title: string) {
+        try {
+            return db.query.posts.findFirst({
+                where: eq(posts.title, title),
+                columns: {
+                    id: true
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            throw new Error('Impossible de récupérer l\'id du post');
+        }
     }
 }

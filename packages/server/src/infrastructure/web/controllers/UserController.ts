@@ -18,7 +18,7 @@ export const login = async (req: Request, res: Response) => {
         const { username, password } = req.body;
 
         // on récupére l'utilisateur avec l'username saisit dans le formulaire (req.body)
-        const user = userRepo.getUserByUsername(username);
+        const user = await userRepo.getUserByUsername(username, { id: true, username: true, password: true });
         if (!user)
             return response(res, { statusCode: 401, message: 'Authentication failed' });
 
@@ -29,7 +29,7 @@ export const login = async (req: Request, res: Response) => {
 
         // On crée notre accessToken et refreshToken qu'on stockera en cookie pour valider l'authentification
         const accessToken = authService.issueAccessToken(user.id as string);
-        const refreshToken = authService.issueRefreshToken(user.id as string);
+        const refreshToken = await authService.issueRefreshToken(user.id as string);
 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true, // pour éviter de lire le cookie client-side en JS (protection XSS)
@@ -59,7 +59,7 @@ export const register = async (req: Request, res: Response) => {
             return response(res, { statusCode: 400, message: 'Passwords do not match' });
 
         // Vérification de l'unicité du nom d'utilisateur saisit
-        const existingUsername = userRepo.getUserByUsername(username);
+        const existingUsername = await userRepo.getUserByUsername(username, { username: true });
         if (existingUsername)
             return response(res, { statusCode: 409, message: 'Username already exists' });
 
