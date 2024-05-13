@@ -1,6 +1,6 @@
 import { db } from "../data";
 import { users } from "../data/schema";
-import { User, NewUser } from "../../domain/entities/User";
+import { User, NewUser, UserColumns } from "../../domain/entities/User";
 import { eq } from "drizzle-orm";
 
 
@@ -11,7 +11,7 @@ export class UserRepository {
     /**
      * Récupère tous les utilisateurs
      */
-    getAllUsers() {
+    getAllUsers(): Promise< Partial<User>[] > {
         try {
             return db.query.users.findMany({
                 columns: {
@@ -28,14 +28,11 @@ export class UserRepository {
     /**
      * Récupère un utilisateur en fonction de son id
      */
-    getUserById(id: string) {
+    getUserById(id: string, columns: UserColumns): Promise<Partial<User | undefined>> {
         try {
             return db.query.users.findFirst({
                 where: eq(users.id, id),
-                columns: {
-                    id: true,
-                    username: true
-                }
+                columns
             })
             // SELECT id, username FROM users WHERE id = $1
         } catch(err) {
@@ -47,14 +44,11 @@ export class UserRepository {
     /**
      * Récupère un utilisateur en fonction de son username
      */
-    getUserByUsername(username: string) {
+    getUserByUsername(username: string, columns: UserColumns): Promise<Partial<User | undefined>> {
         try {
             return db.query.users.findFirst({
                 where: eq(users.username, username),
-                columns: {
-                    id: true,
-                    username: true
-                }
+                columns
             })
         } catch(err) {
             console.error(err);

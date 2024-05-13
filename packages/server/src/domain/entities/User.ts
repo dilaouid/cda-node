@@ -9,3 +9,8 @@ export type User = InferSelectModel<typeof users>;
 // de même pour NewUser: il aura les memes propriétés que la table users
 // sauf les propriétés qui sont générés automatiquement (comme id par exemple)
 export type NewUser = InferInsertModel<typeof users>;
+
+/* On ajoute le type UserColumns qui sera un objet avec des
+clés optionnelles qui correspondent aux colonnes de notre
+table users */
+export type UserColumns = { [K in keyof User]?: boolean }

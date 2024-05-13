@@ -8,3 +8,5 @@ export type Post = InferSelectModel<typeof posts>;
 // de même pour NewPost: il aura les memes propriétés que la table posts
 // sauf les propriétés qui sont générés automatiquement (comme id par exemple)
 export type NewPost = InferInsertModel<typeof posts>;
+
+export type PostColumns = { [K in keyof Post]?: boolean }
