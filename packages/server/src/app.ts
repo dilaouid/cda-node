@@ -12,10 +12,19 @@ import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 const swaggerDocument = YAML.load('./swagger.yaml');
 
+import cors from 'cors';
+
 import env from "./config/env";
 import { requestLogger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/errorHandler";
 import { refreshTokenMiddleware } from "./middlewares/refreshToken";
+
+
+/**
+ * // Port d'écoute
+ * @type {number}
+ */
+const { PORT, FRONTEND_URL } = env;
 
 /**
  * Création intance app express
@@ -28,16 +37,17 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Mw cors pour autoriser les requêtes cross-origin (depuis localhost:5173)
+app.use(cors({
+    origin: FRONTEND_URL, // url de l'application front
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true // on peut permettre le transfert de cookies
+}))
+
 app.use(helmet());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-
-/**
- * // Port d'écoute
- * @type {number}
- */
-const { PORT } = env;
 
 // un middleware est executé avant que la requête n'atteigne la route spécifique
 function middleware1(req: Request, res: Response, next: NextFunction) {
