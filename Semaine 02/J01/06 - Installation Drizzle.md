@@ -48,7 +48,7 @@ Nous allons ajouter trois nouveaux scripts dans notre `package.json`.
 ```json
 {
     "scripts": {
-        "generate": "drizzle-kit generate:pg --config=src/config/drizzle.config.ts",
+        "generate": "drizzle-kit generate pg --config=src/config/drizzle.config.ts",
         "migrate": "tsx -r dotenv/config src/infrastructure/data/migrate.ts",
         "studio": "drizzle-kit studio --config=src/config/drizzle.config.ts",
     }
