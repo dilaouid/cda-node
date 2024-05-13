@@ -7,8 +7,8 @@
     "watch": "tsc --watch",
     "dev": "concurrently \"tsc --watch\" \"tsnd --respawn src/app.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate": "drizzle-kit generate:pg --config=src/config/drizzle.config.ts",
-    "migrate": "tsx -r dotenv/config src/infractucture/data/migrate.ts",
+    "generate": "drizzle-kit generate pg --config=src/config/drizzle.config.ts",
+    "migrate": "tsx -r dotenv/config src/infrastructure/data/migrate.ts",
     "studio": "drizzle-kit studio --config=src/config/drizzle.config.ts",
     "doc": "typedoc"
   },
