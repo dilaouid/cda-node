@@ -43,25 +43,44 @@ export class PostsRepository {
     }
 
     // Récupérer tout les posts existants dans notre posts.json
-    getAllPosts(): Post[] {
-        const data = fs.readFileSync(this.filePath, 'utf-8');
-        const posts = JSON.parse(data);
-
-        // get the user for the author of the post
-        posts.forEach((post: Post) => {
-            const user = this.userRepo.getUserById(post.author as string);
-            delete user?.password;
-            post.author = user as User;
-        });
-
-        return posts;
+    getAllPosts() {
+        try {
+            return db.select({
+                id: posts.id,
+                title: posts.title,
+                content: posts.content,
+                author: {
+                    id: users.id,
+                    username: users.username
+                },
+                date: posts.date,
+                comments: {
+                    id: comments.id,
+                    content: comments.content,
+                    date: comments.date
+                }
+            }).from(posts)
+            .leftJoin(
+                comments, eq(posts.id, comments.postId)
+            ).leftJoin(
+                users, eq(posts.author, users.id)
+            ).execute();
+        } catch (err) {
+            console.error(err);
+            throw new Error('Impossible de récupérer les posts');
+        }
     }
 
-    // Charger les données des posts à partir du fichier JSON (en private car utilisé seulement dans la class)
-    private loadPosts(): Post[] {
-        const data = fs.readFileSync(this.filePath, 'utf-8')
-        return JSON.parse(data);
+    deletePost(id: string) {
+        try {
+            return db.delete(posts).where(eq(posts.id, id)).execute();
+        } catch (err) {
+            console.error(err);
+            throw new Error('Impossible de supprimer le post');
+        }
     }
+    
+
 
     // ajouter un post à notre post.json
     savePosts(post: NewPost) {
