@@ -45,10 +45,9 @@ beforeAll(async () => {
 // test de notre db
 afterAll(async () => {
     try {
-        await db.execute(sql`DROP SCHEMA IF EXISTS test CASCADE`);
+        //await db.execute(sql`DROP SCHEMA IF EXISTS test CASCADE`);
         await pool.end();
     } catch (error) {
-        console.error('Error during afterAll in setup:');
-        console.error(error);
+        console.error('Error during afterAll:', error);
     }
 });

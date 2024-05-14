@@ -7,7 +7,7 @@ import { comments, posts, users } from "../data/schema";
 // Repository qui gère le CRUD des posts
 export class PostsRepository {
     // Récupérer un post par son id
-    getPostById(id: string) {
+    getPostById(id: string): Promise< any > {
         try {
             return db.select({
                 id: posts.id,

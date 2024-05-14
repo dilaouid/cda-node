@@ -1,5 +1,6 @@
 import { NewPost } from "../entities/Post";
 import { PostsRepository } from "../../infrastructure/repositories/PostRepository";
+import { table } from "console";
 
 export class PostService {
     private postsRepository: PostsRepository;
@@ -9,6 +10,8 @@ export class PostService {
     }
 
     getPostById(id: string) {
+        console.log('ID:', id);
+        
         if (!id || id.trim().length < 1)
             return;
         return this.postsRepository.getPostById(id);
@@ -18,7 +21,7 @@ export class PostService {
         return this.postsRepository.getAllPosts();
     }
 
-    async addPost(post: NewPost) {
+    async addPost(post: NewPost) {        
         if (post?.title?.trim()?.length < 3 || post?.content?.trim()?.length < 10)
             return;
         const newPost = await this.postsRepository.savePosts(post);
