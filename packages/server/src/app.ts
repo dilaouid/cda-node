@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express, { NextFunction, Request, Response } from "express";
+import http from "http";
 import helmet from 'helmet'
 import cookieParser from "cookie-parser";
 
@@ -18,6 +19,7 @@ import env from "./config/env";
 import { requestLogger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/errorHandler";
 import { refreshTokenMiddleware } from "./middlewares/refreshToken";
+import { initializeSocketServer } from "./infrastructure/web/sockets/server";
 
 
 /**
@@ -31,6 +33,8 @@ const { PORT, FRONTEND_URL } = env;
  * @type {Express} 
  */
 const app = express();
+const server = http.createServer(app);
+initializeSocketServer(server);
 
 // mw pour pouvoir lire les cookies plus facilement
 app.use(cookieParser());
@@ -78,6 +82,6 @@ app.use(router);
 app.use(errorHandler);
 
 // Faire écouter l'app sur le port spécifié puis afficher msg
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })
