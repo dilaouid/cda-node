@@ -48,6 +48,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.5",
     "postgres": "^3.4.4",
+    "socket.io": "^4.7.5",
     "swagger-ui-express": "^5.0.0",
     "yamljs": "^0.3.0"
   }

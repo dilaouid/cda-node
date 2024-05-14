@@ -8,6 +8,13 @@
       "when": 1715678899520,
       "tag": "0000_parched_roughhouse",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1715687099718,
+      "tag": "0001_broken_maginty",
+      "breakpoints": true
     }
   ]
 }
