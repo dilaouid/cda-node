@@ -17,7 +17,7 @@ export class AuthService {
     async issueRefreshToken(id: string): Promise<string> {
         // on crée un refreshToken qui va durer longtemps (genre 7j)
         const refreshToken = jwt.sign({ userId: id}, REFRESH_SECRET, { expiresIn: '7d' });
-        const user = await this.UserRepository.getUserById(id, { refreshToken: true });
+        const user = await this.UserRepository.getUserById(id, { id: true, refreshToken: true });
         if (user) {
             this.UserRepository.updateUser({...user, refreshToken: refreshToken} as User);
         }
