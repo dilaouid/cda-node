@@ -1,7 +1,5 @@
-import { Post, PostWithComments } from "../entities/Post";
-import { Comment } from "../entities/Comment";
+import { NewPost } from "../entities/Post";
 import { PostsRepository } from "../../infrastructure/repositories/PostRepository";
-import crypto from 'crypto'
 
 export class PostService {
     private postsRepository: PostsRepository;
@@ -10,36 +8,26 @@ export class PostService {
         this.postsRepository = new PostsRepository();
     }
 
-    getPostById(id: string): PostWithComments | undefined {
+    getPostById(id: string) {
+        if (!id || id.trim().length < 1)
+            return;
         return this.postsRepository.getPostById(id);
     }
 
-    getAllPosts(): Post[] {
+    getAllPosts() {
         return this.postsRepository.getAllPosts();
     }
 
-    addPost(post: Post) {
-        const posts = this.postsRepository.getAllPosts();
-        posts.map((post: any) => {
-            post.author = post.author.id;
-        });
-        
-        if (post?.title?.trim().length < 1 || post?.content?.trim().length < 1)
+    async addPost(post: NewPost) {
+        if (post?.title?.trim()?.length < 3 || post?.content?.trim()?.length < 10)
             return;
-
-        const newPost = {
-            id: crypto.randomUUID(),
-            ...post,
-        };
-        // On ajoute le nouveau post à la liste des posts
-        posts.push(newPost);
-
-        // On sauvegarde les posts
-        this.postsRepository.savePosts(posts);
-        return newPost;
+        const newPost = await this.postsRepository.savePosts(post);
+        return newPost[0].id;
     }
 
-    getPostIdByTitle(title: string): string | undefined {
+    getPostIdByTitle(title: string) {
+        if (!title ||title.trim().length < 3)
+            return;
         return this.postsRepository.getPostIdByTitle(title);
     }
 

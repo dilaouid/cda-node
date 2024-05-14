@@ -4,12 +4,11 @@ import env from "../config/env";
 
 import jwt from 'jsonwebtoken';
 import { CustomRequest } from "../types/express";
-import { table } from "console";
 
 const { JWT_SECRET } = env;
 
 export const isAuthenticated = (req: CustomRequest, res: Response, next: NextFunction) => {
-    const { accessToken } = req.cookies;    
+    const { accessToken } = req.cookies;
     if (!accessToken)
         return response(res, { statusCode: 403, message: 'Token missing'});
     try {
@@ -19,7 +18,7 @@ export const isAuthenticated = (req: CustomRequest, res: Response, next: NextFun
 
         // On ajoute le payload dans la propriété req pour pouvoir l'utiliser dans les routes
         req.user = { userId, name };
-        table(decoded);
+        console.table(decoded);
 
         // On passe au controller ou au mw suivant: tout s'est bien passé
         next();
