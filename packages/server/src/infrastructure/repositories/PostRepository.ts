@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
-import { NewPost, Post } from "../../domain/entities/Post";
-import { User } from "../../domain/entities/User";
+import { NewPost } from "../../domain/entities/Post";
 import { db } from "../data";
 import { comments, posts, users } from "../data/schema";
 

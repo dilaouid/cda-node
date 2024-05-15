@@ -56,7 +56,7 @@ describe('PostService', () => {
 
     it('should get all posts', async () => {
         const posts = await postService.getAllPosts();
-        posts.forEach(post => {
+        posts.forEach((post: any) => {
             expect(post).toMatchObject({
               id: expect.any(String),
               title: expect.any(String),

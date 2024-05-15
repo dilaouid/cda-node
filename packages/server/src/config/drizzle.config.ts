@@ -27,5 +27,5 @@ export default defineConfig({
     verbose: true,
 
     // protection typesafety
-    strict: true
+    // strict: true
 })

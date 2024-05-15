@@ -1,17 +1,19 @@
 import { NewPost } from "../entities/Post";
 import { PostsRepository } from "../../infrastructure/repositories/PostRepository";
-import { table } from "console";
+import { sql } from "drizzle-orm";
+import { db } from "../../infrastructure/data";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 
 export class PostService {
     private postsRepository: PostsRepository;
+    private userRepository: UserRepository;
 
     constructor() {
         this.postsRepository = new PostsRepository();
+        this.userRepository = new UserRepository();
     }
 
     getPostById(id: string) {
-        console.log('ID:', id);
-        
         if (!id || id.trim().length < 1)
             return;
         return this.postsRepository.getPostById(id);
@@ -21,8 +23,8 @@ export class PostService {
         return this.postsRepository.getAllPosts();
     }
 
-    async addPost(post: NewPost) {        
-        if (post?.title?.trim()?.length < 3 || post?.content?.trim()?.length < 10)
+    async addPost(post: NewPost) {
+        if (post?.title?.trim().length < 1 || post?.content?.trim().length < 1)
             return;
         const newPost = await this.postsRepository.savePosts(post);
         return newPost[0].id;
