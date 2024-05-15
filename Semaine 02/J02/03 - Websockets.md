@@ -16,10 +16,15 @@ Vous avez peut-être tous déjà vu Shrek 2. [Vous vous souvenez de la scène o�
 
 Le client va envoyer une requête au serveur à chaque court interval pour être tenu informé des nouvelles données. C'est très gourmand en ressources, et ça ne permet pas d'avoir une synchronisation en temps réel.
 
+
+---
+
 <p style="text-align: center;">
     <img src="../../assets/polling.gif" alt="Polling animation"/>
     <em>Schéma du polling (le carré rouge représente une réponse serveur défavorable, le vert une réponse favorable)</em>
 </p>
+
+---
 
 ## Solution 2 : le long polling
 
@@ -27,10 +32,14 @@ Le long polling est une version alternative du polling. C'est une méthode qui c
 
 Pourquoi ? Simplement car vous allez laisser le connexion ouverte en simultanées pour de nombreux utilisateurs. C'est une méthode qui peut vite saturer le serveur, et qui n'est pas du tout optimale ni scalable.
 
+---
+
 <p style="text-align: center;">
     <img src="../../assets/long_polling.gif" alt="Long Polling animation"/>
     <em>Schéma du long polling</em>
 </p>
+
+---
 
 ## Solution 3 : les websockets
 
@@ -44,10 +53,14 @@ A l'instar d'une communication HTTP classique (car Websocket est également un p
 
 En résumé, le serveur peut envoyer des données au client sans que celui-ci n'ait envoyé de requête. C'est une communication en temps réel.
 
+---
+
 <p style="text-align: center;">
     <img src="../../assets/websocket.gif" alt="Websockets animation"/>
     <em>Schéma des websockets</em>
 </p>
+
+---
 
 C'est comme une messagerie instantanée. Vous envoyez un message, et l'autre personne le reçoit instantanément. Une fois la connexion établie, la discussion reste ouverte, prête à transmettre des informations dans les deux sens: client vers serveur, et serveur vers client.
 
