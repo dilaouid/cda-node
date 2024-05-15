@@ -2,6 +2,15 @@
 
 Dans ce cours, nous allons parler des websockets, mais seulement en théorie. Nous partirons sur l'aspect pratique dans le cours suivant. L'important, c'est de vraiment comprendre ce qu'est un websocket, comment ça fonctionne, et pourquoi c'est utile.
 
+## Table des matières
+
+- [La problématique](#la-problématique)
+- [Solution 1: le polling](#solution-1-le-polling)
+- [Solution 2 : le long polling](#solution-2--le-long-polling)
+- [Solution 3 : les websockets](#solution-3--les-websockets)
+  - [Comment ça marche](#comment-ça-marche)
+  - [Exemples de choses à faire avec les websockets](#exemples-de-choses-à-faire-avec-les-websockets)
+
 ## La problématique
 
 Imaginez le cas d'une messagerie instantanée. Tout néophyte (je suis passé par là pour l'anecdote) penserait que pour synchroniser en direct les messages reçus, il fallait par des appels API toutes les 2 secondes pour être tenus informés des nouveaux messages. Et cette méthode a un nom qu'on verra par la suite.
