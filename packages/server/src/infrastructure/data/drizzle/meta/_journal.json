@@ -29,6 +29,20 @@
       "when": 1715724691488,
       "tag": "0003_abandoned_riptide",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1715859567936,
+      "tag": "0004_past_stone_men",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1715865416514,
+      "tag": "0005_stiff_wrecker",
+      "breakpoints": true
     }
   ]
 }

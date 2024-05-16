@@ -1,9 +1,5 @@
 import { Socket } from "socket.io";
-import { MessageService } from "../../../domain/services/MessageService";
-import { RoomService } from "../../../domain/services/RoomService";
-
-const messageService = new MessageService();
-const roomService = new RoomService();
+import { messageService, roomService } from "../../dependencies/container";
 
 // Fonction (controller) pour envoyer un message
 export const sendMessage = async (socket: Socket, data: { authorId: string, roomId: string, content: string }, userId: string) => {

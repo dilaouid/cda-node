@@ -45,7 +45,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: FRONTEND_URL, // url de l'application front
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    credentials: true // on peut permettre le transfert de cookies
+    credentials: true, // on peut permettre le transfert de cookies
+    allowedHeaders: ['Content-Type', 'Authorization', 'Range'],
+    exposedHeaders: ['Content-Range', 'Accept-Ranges', 'Content-Length', 'Content-Type'],
 }))
 
 app.use(helmet());

@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthService } from "../domain/services/AuthService";
-
-const authService = new AuthService();
+import { authService } from "../infrastructure/dependencies/container";
 
 export const refreshTokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     // On récupére le refreshToken des cookies de l'utilisateur

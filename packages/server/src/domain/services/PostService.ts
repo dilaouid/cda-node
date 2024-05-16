@@ -1,16 +1,11 @@
 import { NewPost } from "../entities/Post";
-import { PostsRepository } from "../../infrastructure/repositories/PostRepository";
-import { sql } from "drizzle-orm";
-import { db } from "../../infrastructure/data";
-import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { IPostRepository } from "../repositories/IPostRepository";
 
 export class PostService {
-    private postsRepository: PostsRepository;
-    private userRepository: UserRepository;
+    private postsRepository: IPostRepository;
 
-    constructor() {
-        this.postsRepository = new PostsRepository();
-        this.userRepository = new UserRepository();
+    constructor(postsRepository: IPostRepository) {
+        this.postsRepository = postsRepository;
     }
 
     getPostById(id: string) {

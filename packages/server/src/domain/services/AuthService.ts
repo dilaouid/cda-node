@@ -1,13 +1,17 @@
 import jwt from 'jsonwebtoken';
 import env from '../../config/env';
-import { UserRepository } from '../../infrastructure/repositories/UserRepository';
+import { IUserRepository } from '../repositories/IUserRepository';
 import { User } from '../entities/User';
 
 const { REFRESH_SECRET, JWT_SECRET } = env;
 
 export class AuthService {
     private refreshTokenStore: Map<string, string> = new Map();
-    private UserRepository = new UserRepository();
+    private userRepository: IUserRepository;
+
+    constructor(userRepository: IUserRepository) {
+        this.userRepository = userRepository;
+    }
 
     // générer un JWT pour un user avec une durée de validité de 15 mn
     issueAccessToken(id: string): string {
@@ -17,9 +21,9 @@ export class AuthService {
     async issueRefreshToken(id: string): Promise<string> {
         // on crée un refreshToken qui va durer longtemps (genre 7j)
         const refreshToken = jwt.sign({ userId: id}, REFRESH_SECRET, { expiresIn: '7d' });
-        const user = await this.UserRepository.getUserById(id, { id: true, refreshToken: true });
+        const user = await this.userRepository.getUserById(id, { id: true, refreshToken: true });
         if (user) {
-            this.UserRepository.updateUser({...user, refreshToken: refreshToken} as User);
+            this.userRepository.updateUser({...user, refreshToken: refreshToken} as User);
         }
 
         // On retourne le JWT pour s'en servir dans le controller (écriture de cookies)
@@ -30,7 +34,7 @@ export class AuthService {
         try {
             // On vérifie que le token en paramètre est bien valide
             const payload = jwt.verify(refreshToken, REFRESH_SECRET) as jwt.JwtPayload;
-            const user = await this.UserRepository.getUserById(payload.userId, { id: true, refreshToken: true });
+            const user = await this.userRepository.getUserById(payload.userId, { id: true, refreshToken: true });
 
             if (user && user.refreshToken === refreshToken) {
                 // On génère un nouveau token d'accès
@@ -49,7 +53,7 @@ export class AuthService {
                 // delete access token cookies and refresh token cookies
                 if (user) {
                     user.refreshToken = ''
-                    this.UserRepository.updateUser(user as User);
+                    this.userRepository.updateUser(user as User);
                 }
 
                 throw new Error('Invalid refresh token');

@@ -2,12 +2,13 @@ import { db } from "../data";
 import { users } from "../data/schema";
 import { User, NewUser, UserColumns } from "../../domain/entities/User";
 import { eq } from "drizzle-orm";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
 
 
 /**
  * Repository qui gère le CRUD des utilisateurs
  */
-export class UserRepository {
+export class UserRepository implements IUserRepository {
     /**
      * Récupère tous les utilisateurs
      */
@@ -59,9 +60,9 @@ export class UserRepository {
     /**
      * Création d'un nouvel utilisateur
      */
-    createUser(user: NewUser) {
+    async createUser(user: NewUser): Promise<void> {
         try {
-            return db.insert(users).values(user).execute();
+            await db.insert(users).values(user).execute();
         } catch (err) {
             console.error(err);
             throw new Error("Impossible de créer l'utilisateur")
@@ -71,9 +72,9 @@ export class UserRepository {
     /**
      * Met à jour un utilisateur
      */
-    updateUser(user: User) {
+    async updateUser(user: User): Promise<void> {
         try {
-            return db.update(users)
+            await db.update(users)
                 .set(user)
                 .where(
                     eq(users.id, user.id)

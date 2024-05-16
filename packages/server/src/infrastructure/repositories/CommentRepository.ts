@@ -2,11 +2,12 @@ import { db } from "../data";
 import { Comment, NewComment } from "../../domain/entities/Comment";
 import { comments, posts, users } from "../data/schema";
 import { and, eq } from "drizzle-orm";
+import { ICommentRepository } from "../../domain/repositories/ICommentRepository";
 
 /**
  * Repository qui gère le CRUD des commentaires
  */
-export class CommentRepository {
+export class CommentRepository implements ICommentRepository {
 
     getCommentById(id: string) {
         try {
@@ -30,9 +31,9 @@ export class CommentRepository {
         }
     }
 
-    deleteCommentById(id: string, userId: string) {
+    async deleteCommentById(id: string, userId: string): Promise<void> {
         try {
-            return db.delete(comments).where(
+            await db.delete(comments).where(
                 and(
                     eq(comments.id, id),
                     eq(comments.author, userId)
@@ -44,9 +45,9 @@ export class CommentRepository {
         }
     }
 
-    createComment(comment: NewComment) {
+    async createComment(comment: NewComment): Promise<void> {
         try {
-            return db.insert(comments).values(comment).execute();
+            await db.insert(comments).values(comment).execute();
         } catch (err) {
             console.error(err);
             throw new Error('Impossible de créer le commentaire');

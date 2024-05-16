@@ -1,4 +1,4 @@
-import { beforeAll, describe, it, expect } from '@jest/globals';
+// Jest globals are available without import in Jest 29
 import { sql } from 'drizzle-orm';
 
 import { PostService } from '../../domain/services/PostService';
@@ -27,17 +27,20 @@ describe('PostService', () => {
     }
 
     beforeAll(async () => {
-        postService = new PostService();
+        const container = await import('../../infrastructure/dependencies/container');
+        postService = container.postService;
         newPost.author = createdUser.id;
         await db.execute(sql`SET search_path TO test`);
     })
 
     it('should add a new post', async () => {
+        await db.execute(sql`SET search_path TO test`);
         createdPostID = await postService.addPost(newPost);
         expect(createdPostID).toBeTruthy();
     })
 
     it('should get a post by its id', async () => {
+        await db.execute(sql`SET search_path TO test`);
         const post = await postService.getPostById(createdPostID || '');
         expect(post[0]).toEqual(
             expect.objectContaining({
@@ -55,6 +58,7 @@ describe('PostService', () => {
     });
 
     it('should get all posts', async () => {
+        await db.execute(sql`SET search_path TO test`);
         const posts = await postService.getAllPosts();
         posts.forEach((post: any) => {
             expect(post).toMatchObject({

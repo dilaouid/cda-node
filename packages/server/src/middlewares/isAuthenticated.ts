@@ -1,13 +1,13 @@
-import { NextFunction, Response } from "express";
+import { Request, NextFunction, Response } from "express";
 import { response } from "../utils/response";
 import env from "../config/env";
 
 import jwt from 'jsonwebtoken';
-import { CustomRequest } from "../types/express";
+import '../types/express'; // Activate module declaration
 
 const { JWT_SECRET } = env;
 
-export const isAuthenticated = (req: CustomRequest, res: Response, next: NextFunction) => {
+export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     const { accessToken } = req.cookies;
     if (!accessToken)
         return response(res, { statusCode: 403, message: 'Token missing'});

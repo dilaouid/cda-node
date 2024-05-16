@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
-import { PostService } from '../../../domain/services/PostService';
 import { response } from '../../../utils/response';
-import { CustomRequest } from '../../../types/express';
-
-const postService = new PostService();
+import { postService } from '../../dependencies/container';
+import '../../../types/express'; // Activate module declaration
 
 export const getAllPosts = async (req: Request, res: Response) => {
     const posts = await postService.getAllPosts();
@@ -30,7 +28,7 @@ export const getPostById = async (req: Request, res: Response) => {
     }
 };
 
-export const createPost = async (req: CustomRequest, res: Response) => {
+export const createPost = async (req: Request, res: Response) => {
     const { title, content } = req.body;
 
     const post = { title, content, author: req.user.userId, date: new Date() };

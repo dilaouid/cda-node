@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { response } from "../../../utils/response";
-import { CommentService } from "../../../domain/services/CommentService";
-
-const commentService = new CommentService();
+import { commentService } from "../../dependencies/container";
+import '../../../types/express'; // Activate module declaration
 
 /**
  * afficher à l'écran l'ensemble des commentaires d'un article filtré via son id  

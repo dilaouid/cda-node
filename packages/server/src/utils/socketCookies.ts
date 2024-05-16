@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { Socket } from 'socket.io';
-import { parse } from "cookie";
 
 import env from '../config/env';
 
@@ -13,7 +12,13 @@ export function authenticateSocket(socket: Socket): string | null {
         return null;
     }
 
-    const parsedCookies = parse(cookies);
+    const parsedCookies: Record<string, string> = {};
+    cookies.split(';').forEach(cookie => {
+        const [key, value] = cookie.trim().split('=');
+        if (key && value) {
+            parsedCookies[key] = decodeURIComponent(value);
+        }
+    });
     const accessToken = parsedCookies.accessToken;
     if (!accessToken) {
         socket.emit('error', 'No access token found');

@@ -1,10 +1,10 @@
-import { RoomRepository } from "../../infrastructure/repositories/RoomRepository";
+import { IRoomRepository } from "../repositories/IRoomRepository";
 
 export class RoomService {
-    private roomRepository: RoomRepository;
+    private roomRepository: IRoomRepository;
 
-    constructor() {
-        this.roomRepository = new RoomRepository();
+    constructor(roomRepository: IRoomRepository) {
+        this.roomRepository = roomRepository;
     }
 
     createRoom() {

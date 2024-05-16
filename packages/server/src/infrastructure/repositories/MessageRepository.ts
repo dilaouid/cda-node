@@ -1,8 +1,9 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../data";
 import { messages } from "../data/schema";
+import { IMessageRepository } from "../../domain/repositories/IMessageRepository";
 
-export class MessageRepository {
+export class MessageRepository implements IMessageRepository {
     createMessage(roomId: string, author: string, content: string) {
         try {
             return db.insert(messages).values({
@@ -16,14 +17,14 @@ export class MessageRepository {
         }
     }
 
-    deleteMessage(id: string, userId: string) {
+    async deleteMessage(id: string, userId: string): Promise<void> {
         try {
-            return db.delete(messages).where(
+            await db.delete(messages).where(
                 and(
                     eq(messages.id, id),
                     eq(messages.author, userId)
                 )
-            ).execute()
+            ).execute();
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de supprimer le message");

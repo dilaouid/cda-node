@@ -1,11 +1,11 @@
-import { CommentRepository } from "../../infrastructure/repositories/CommentRepository";
+import { ICommentRepository } from "../repositories/ICommentRepository";
 import { NewComment } from "../entities/Comment";
 
 export class CommentService {
-    private commentRepository: CommentRepository;
+    private commentRepository: ICommentRepository;
 
-    constructor() {
-        this.commentRepository = new CommentRepository();
+    constructor(commentRepository: ICommentRepository) {
+        this.commentRepository = commentRepository;
     }
 
     getCommentById(id: string) {

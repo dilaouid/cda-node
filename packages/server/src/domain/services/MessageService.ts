@@ -1,10 +1,10 @@
-import { MessageRepository } from "../../infrastructure/repositories/MessageRepository";
+import { IMessageRepository } from "../repositories/IMessageRepository";
 
 export class MessageService {
-    private messageRepository: MessageRepository;
+    private messageRepository: IMessageRepository;
 
-    constructor() {
-        this.messageRepository = new MessageRepository();
+    constructor(messageRepository: IMessageRepository) {
+        this.messageRepository = messageRepository;
     }
 
     sendMessage(data: { roomId: string, author: string, content: string }) {

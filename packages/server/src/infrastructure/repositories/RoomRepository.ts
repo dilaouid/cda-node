@@ -1,8 +1,9 @@
 import { eq } from "drizzle-orm";
 import { db } from "../data";
 import { rooms, messages, users } from "../data/schema";
+import { IRoomRepository } from "../../domain/repositories/IRoomRepository";
 
-export class RoomRepository {
+export class RoomRepository implements IRoomRepository {
     createRoom() {
         try {
             return db.insert(rooms).values({}).execute();

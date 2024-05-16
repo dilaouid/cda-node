@@ -1,4 +1,4 @@
-import { beforeAll, afterAll } from '@jest/globals';
+// Jest globals are available without import in Jest 29
 import { db, pool } from '../infrastructure/data';
 import bcrypt from 'bcrypt';
 

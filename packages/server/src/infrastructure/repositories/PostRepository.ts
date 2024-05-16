@@ -2,9 +2,10 @@ import { eq } from "drizzle-orm";
 import { NewPost } from "../../domain/entities/Post";
 import { db } from "../data";
 import { comments, posts, users } from "../data/schema";
+import { IPostRepository } from "../../domain/repositories/IPostRepository";
 
 // Repository qui gère le CRUD des posts
-export class PostsRepository {
+export class PostsRepository implements IPostRepository {
     // Récupérer un post par son id
     getPostById(id: string): Promise< any > {
         try {
@@ -70,9 +71,9 @@ export class PostsRepository {
         }
     }
 
-    deletePost(id: string) {
+    async deletePost(id: string): Promise<void> {
         try {
-            return db.delete(posts).where(eq(posts.id, id)).execute();
+            await db.delete(posts).where(eq(posts.id, id)).execute();
         } catch (err) {
             console.error(err);
             throw new Error('Impossible de supprimer le post');

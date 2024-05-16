@@ -1,29 +1,23 @@
 import { Request, Response } from 'express';
 import env from '../../../config/env';
-import bcrypt from 'bcrypt';
-
-import { UserRepository } from '../../repositories/UserRepository';
-import { AuthService } from '../../../domain/services/AuthService';
 
 import { response } from '../../../utils/response';
-import { CustomRequest } from '../../../types/express';
+import { userService, authService } from '../../dependencies/container';
+import '../../../types/express'; // Activate module declaration
 
 const { NODE_ENV } = env;
-
-const userRepo = new UserRepository();
-const authService = new AuthService();
 
 export const login = async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
 
         // on récupére l'utilisateur avec l'username saisit dans le formulaire (req.body)
-        const user = await userRepo.getUserByUsername(username, { id: true, username: true, password: true });
+        const user = await userService.getUserByUsername(username, { id: true, username: true, password: true });
         if (!user)
             return response(res, { statusCode: 401, message: 'Authentication failed' });
 
         // On va comparer le mot de passe hashé (entre celui du formulaire et celui enregistré dans notre json)
-        const isValid = await bcrypt.compare(password, user.password as string);
+        const isValid = await userService.validatePassword(password, user.password as string);
         if (!isValid)
             return response(res, { statusCode: 401, message: 'Authentication failed' });
 
@@ -59,14 +53,14 @@ export const register = async (req: Request, res: Response) => {
             return response(res, { statusCode: 400, message: 'Passwords do not match' });
 
         // Vérification de l'unicité du nom d'utilisateur saisit
-        const existingUsername = await userRepo.getUserByUsername(username, { username: true });
-        if (existingUsername)
+        const usernameExists = await userService.checkUsernameExists(username);
+        if (usernameExists)
             return response(res, { statusCode: 409, message: 'Username already exists' });
 
         // hashage du mot de passe avec bcrypt
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await userService.hashPassword(password);
 
-        userRepo.createUser({ username, password: hashedPassword });
+        await userService.createUser({ username, password: hashedPassword });
         response(res, {statusCode: 201, message: 'User created successfully'});
     } catch(error) {
         console.error(error);
@@ -74,7 +68,7 @@ export const register = async (req: Request, res: Response) => {
     } 
 }
 
-export const me = async (req: CustomRequest, res: Response) => {
+export const me = async (req: Request, res: Response) => {
     try {
         // On récupère l'utilisateur stocké dans le token
         response(res, { statusCode: 200, message: 'OK', data: req.user });
