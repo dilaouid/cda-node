@@ -9,6 +9,8 @@ import DrizzleImage from '../../../assets/img/features/drizzle.png';
 import TestsImage from '../../../assets/img/features/tests.png';
 import WsImage from '../../../assets/img/features/ws.png';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const Features = () => {
     const images = [
         DrizzleImage,
@@ -31,6 +33,12 @@ export const Features = () => {
                         </Feature>
                     )
                 } )}
+                
+            
+                <video width="320" height="240" controls>
+                    <source src={`${API_URL}/videos/7d847a59-cd87-4c4d-85e1-eea24428025c`} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
             </Row>
         </Container>
     )
