@@ -39,7 +39,7 @@ On modifie notre architecture, pour ajouter les dossiers suivants à notre `src`
     - `integration`: qui contiendra nos tests d'intégration (routes, controllers, etc...)
     - `mocks`: qui contiendra nos mocks
 
-Nous allons également configurer jest avec nos deux fichiers de configuration, à savoir `jest.config.js` et `jest.setup.ts` à la racine de notre dossier `server`.
+Nous allons également configurer jest avec nos deux fichiers de configuration, à savoir `jest.config.js` à la racine de notre dossier `server` et `jest.setup.ts` dans notre dossier `src/tests/` .
 
 Le fichier `jest.config.js` va nous permettre de configurer jest pour qu'il puisse utiliser TypeScript, et de lui dire de lancer le fichier `jest.setup.ts` avant et après chaque test.
 
@@ -62,10 +62,10 @@ module.exports = {
 };
 ```
 
-Le fichier `src/jest.setup.ts` va nous permettre de faire des actions avant et après chaque test. Dans notre cas, nous allons initier un schéma du nom de `test` dans notre DB, et le supprimer après que tout les tests aient été exécutés.
+Le fichier `src/tests/jest.setup.ts` va nous permettre de faire des actions avant et après chaque test. Dans notre cas, nous allons initier un schéma du nom de `test` dans notre DB, et le supprimer après que tout les tests aient été exécutés.
 
 ```ts
-// src/jest.setup.ts
+// src/tests/jest.setup.ts
 import { beforeAll, afterAll } from '@jest/globals';
 import { db, pool } from '../infrastructure/data';
 import bcrypt from 'bcrypt';
